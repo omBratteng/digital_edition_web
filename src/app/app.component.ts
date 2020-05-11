@@ -69,6 +69,7 @@ export class DigitalEditionsApp {
   currentCollectionId = '';
   currentCollectionName = '';
   currentMarkdownId = null;
+  openCollectionFromToc = false;
 
   accordionTOC = false;
   accordionMusic = false;
@@ -99,7 +100,7 @@ export class DigitalEditionsApp {
 
   pagesThatShallShow = {
     tocMenu: ['FeaturedFacsimilePage'],
-    tocMenuIfNotAccordion: ['SingleEditionPage', 'CoverPage'],
+    pagesWithSeparateTocMenu: ['SingleEditionPage', 'CoverPage'],
     aboutMenu: ['AboutPage'],
     contentMenu: ['HomePage', 'EditionsPage', 'ContentPage', 'MusicPage', 'FeaturedFacsimilePage']
   }
@@ -234,6 +235,12 @@ export class DigitalEditionsApp {
       this.accordionTOC = this.config.getSettings('AccordionTOC');
     } catch (e) {
       this.accordionTOC = false;
+    }
+
+    try {
+      this.openCollectionFromToc = this.config.getSettings('OpenCollectionFromToc');
+    } catch (e) {
+      this.openCollectionFromToc = false;
     }
 
     try {
@@ -875,8 +882,8 @@ export class DigitalEditionsApp {
       this.enableTableOfContentsMenu();
     });
 
-    this.doFor(p, pagesWith.tocMenuIfNotAccordion, () => {
-      if (!this.accordionTOC) {
+    this.doFor(p, pagesWith.pagesWithSeparateTocMenu, () => {
+      if (this.openCollectionFromToc) {
         this.enableTableOfContentsMenu();
       }
     });
@@ -1154,10 +1161,6 @@ export class DigitalEditionsApp {
       } else {
         this.currentContentName = collection.title;
         const params = { collection: collection, fetch: false, id: collection.id };
-
-        document.getElementById('contentMenu').classList.remove('menu-enabled');
-        document.getElementById('tableOfContentsMenu').classList.add('menu-enabled');
-        console.log('jihppp');
 
         this.nav.setRoot('single-edition', params, { animate: false, direction: 'forward', animation: 'ios-transition' });
       }
