@@ -250,11 +250,14 @@
     <ion-menu [content]="content" id="tableOfContentsMenu">
         <ion-content class="outer-content list-item-spacing">
             <!-- TOC Type:  Drilldown -->
-            <table-of-contents-drilldown-menu *ngIf="openCollectionFromToc"></table-of-contents-drilldown-menu>
+            <table-of-contents-drilldown-menu *ngIf="!accordionTOC"></table-of-contents-drilldown-menu>
 
             <!-- TOC Type: Accordion -->
-            <table-of-contents-accordion *ngIf="accordionTOC && options && false" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
+            <table-of-contents-accordion *ngIf="accordionTOC && options && !openCollectionFromToc" [showBackButton]="true" [options]="options" [collectionId]="currentCollectionId" [collectionName]="currentCollectionName" [settings]="sideMenuSettings">
             </table-of-contents-accordion>
+
+            <table-of-contents-accordion *ngIf="currentCollection && accordionTOC && openCollectionFromToc" [showBackButton]="true" [options]="currentCollection.accordionToc" [collectionId]="currentCollection.id" [collectionName]="currentCollection.title" [settings]="sideMenuSettings"></table-of-contents-accordion>
+
 
         </ion-content>
     </ion-menu>
