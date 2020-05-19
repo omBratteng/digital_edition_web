@@ -43,13 +43,14 @@ export class IllustrationsComponent {
 
   ngAfterViewInit() {
     document.body.addEventListener('click', (event: any) => {
-      const isReadTextThumbnail = event.target.previousElementSibling.classList.contains('est_figure_graphic');
+      const isReadTextThumbnail = event.target.classList.contains('it_image');
       if (isReadTextThumbnail) {
         this.events.subscribe('give:illustration', (image) => {
           if (image) {
+            const imageURL = `${this.config.getSettings('app.apiEndpoint')}/topelius/gallery/get/19/${image}.jpg`;
             this.showOne = true;
             this.viewAll = false;
-            this.images = [image];
+            this.images = [imageURL];
           } else {
             this.showOne = false;
           }
@@ -78,8 +79,9 @@ export class IllustrationsComponent {
   }
 
   scrollToPositionInText(image) {
-    image = image.replace('http:', '');
-    const target = document.querySelector(`[src="${image}"]`);
+    image = image.substr(image.lastIndexOf('/') + 1, image.length - image.lastIndexOf('/') - 1);
+    image = image.replace('.jpg', '');
+    const target = document.querySelector(`[data-id="${image}"]`);
     target.scrollIntoView({'behavior': 'smooth', 'block': 'center'});
   }
 
@@ -88,9 +90,10 @@ export class IllustrationsComponent {
     this.textService.getEstablishedText(this.itemId).subscribe(text => {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, 'text/html');
-      const images: any = xmlDoc.querySelectorAll('img.est_figure_graphic');
+      const images: any = xmlDoc.querySelectorAll('img.it_image');
       for (let i = 0; i < images.length ; i++) {
-        const image = images[i].src;
+        let image = images[i].dataset.id;
+        image = `${this.config.getSettings('app.apiEndpoint')}/topelius/gallery/get/19/${image}.jpg`;
         this.images.push(image);
       }
     });

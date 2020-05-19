@@ -62,8 +62,8 @@ export class ReadTextComponent {
 
   ngAfterViewInit() {
     this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-      if (event.target.previousElementSibling.classList.contains('est_figure_graphic')) {
-        const image = event.target.previousElementSibling.src;
+      if (event.target.classList.contains('it_image')) {
+        const image = event.target.dataset.id;
         this.events.publish('give:illustration', image);
       }
 

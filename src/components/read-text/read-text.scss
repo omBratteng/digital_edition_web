@@ -1,4 +1,8 @@
 read-text {
+        img.it_image {
+            width: 25px;
+        }
+
       img.est_figure_graphic {
         display: none;
       & ~ p.tei:first-of-type::after {
