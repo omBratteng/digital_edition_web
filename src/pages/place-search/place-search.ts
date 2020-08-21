@@ -113,8 +113,6 @@ export class PlaceSearchPage {
       places => {
         places = places.hits.hits;
         this.showLoading = false;
-
-        const placesTmp = [];
         places.forEach(element => {
           element = element['_source'];
           element['sortBy'] = String(element['name']).toLowerCase().trim().replace('ʽ', '');
@@ -133,13 +131,12 @@ export class PlaceSearchPage {
             }
           });
           if ( !found ) {
-            placesTmp.push(element);
             this.places.push(element);
           }
         });
 
-        this.allData = placesTmp;
-        this.cacheData = placesTmp;
+        this.allData = this.places;
+        this.cacheData = this.places;
         this.sortListAlphabeticallyAndGroup(this.allData);
       },
       err => {console.error(err); this.showLoading = false; }

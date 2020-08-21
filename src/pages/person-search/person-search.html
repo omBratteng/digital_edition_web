@@ -57,8 +57,8 @@
                 </ion-col>
             </ion-row>
 
-            <ion-list>
-                <div *ngFor="let p of persons">
+            <!--ion-list-->
+                <!--div *ngFor="let p of persons">
                   <ion-item *ngIf="p?.firstOfItsKind">
                     <ion-item-divider color="light">{{p.firstOfItsKind}}</ion-item-divider>
                   </ion-item>
@@ -66,11 +66,30 @@
                     <p *ngIf="p.last_name || p.first_name">{{p.last_name}}<span *ngIf="p.last_name && p.first_name">, </span>{{p.first_name}}</p>
                     <p *ngIf="!p.last_name && !p.first_name">{{p.name}}</p>
                   </ion-item>
-                </div>
-            </ion-list>
+                </div-->
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>&nbsp;</ion-col>
+                    <ion-col>Given name</ion-col>
+                    <ion-col>Last name</ion-col>
+                    <ion-col>Preposition</ion-col>
+                    <ion-col>Full name</ion-col>
+                  </ion-row>
 
-              <ion-infinite-scroll *ngIf="!searchText" (ionInfinite)="doInfinite($event)">
-                <ion-infinite-scroll-content></ion-infinite-scroll-content>
+                  <ion-row *ngFor="let p of persons">
+                    <ion-col *ngIf="p?.firstOfItsKind" size="5">{{p.firstOfItsKind}}</ion-col>
+                    <ion-col *ngIf="!p?.firstOfItsKind">&nbsp;</ion-col>
+                    <ion-col *ngIf="!p?.firstOfItsKind">{{p.first_name}}</ion-col>
+                    <ion-col *ngIf="!p?.firstOfItsKind">{{p.last_name}}</ion-col>
+                    <ion-col *ngIf="!p?.firstOfItsKind">{{p.preposition}}</ion-col>
+                    <ion-col *ngIf="!p?.firstOfItsKind">{{p.full_name}}</ion-col>
+                  </ion-row>
+                </ion-grid>
+            <!--/ion-list-->
+
+              <ion-infinite-scroll *ngIf="!searchText" threshold="100px" (ionInfinite)="doInfinite($event)">
+                <ion-infinite-scroll-content  loadingSpinner="bubbles"
+      loadingText="Loading more data..."></ion-infinite-scroll-content>
               </ion-infinite-scroll>
           </ion-col>
           <ion-col col-2 class="alphabet">

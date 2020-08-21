@@ -196,7 +196,6 @@ export class PersonSearchPage {
     this.showLoading = true;
     this.semanticDataService.getSubjectsElastic(this.from, this.searchText).subscribe(
       persons => {
-        const personsTmp = [];
         persons = persons.hits.hits;
         persons.forEach(element => {
           element = element['_source'];
@@ -228,14 +227,13 @@ export class PersonSearchPage {
               }
             });
             if ( !found ) {
-              personsTmp.push(element);
               this.persons.push(element);
             }
           }
         });
 
-        this.allData = personsTmp;
-        this.cacheData = personsTmp;
+        this.allData = this.persons;
+        this.cacheData = this.persons;
         this.showLoading = false;
         this.sortListAlphabeticallyAndGroup(this.allData);
       },
